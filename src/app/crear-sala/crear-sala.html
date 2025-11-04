@@ -1,0 +1,30 @@
+<div class="crear-root">
+  <header class="title-wrap">
+    <h1 class="title">
+      Impostor <span class="accent">OT</span>
+    </h1>
+    <p class="subtitle">Crear sala</p>
+  </header>
+
+  <mat-card class="crear-card">
+    <mat-form-field appearance="fill" color="accent" class="campo">
+      <mat-label>Tu nombre</mat-label>
+      <input matInput [(ngModel)]="nombreJugador" maxlength="20" />
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      class="action-btn"
+      (click)="crearSala()"
+      [disabled]="cargando || !nombreJugador.trim()">
+      {{ cargando ? "Creando..." : "Crear sala" }}
+    </button>
+  </mat-card>
+
+  <footer class="footer">
+    <button mat-stroked-button color="accent" (click)="volverHome()">
+      ← Volver al inicio
+    </button>
+  </footer>
+</div>

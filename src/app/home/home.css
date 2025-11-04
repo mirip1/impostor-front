@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Roboto:wght@300;400;500&display=swap');
+
+.home-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+  color: #f0f0f0;
+  font-family: 'Roboto', sans-serif;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.title-wrap {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 44px;
+  font-weight: 700;
+  color: #d4af37;
+  text-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.accent {
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.subtitle {
+  color: #bbb;
+  font-size: 14px;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.action-btn {
+  height: 54px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  text-transform: none;
+}
+
+.action-btn[color="primary"] {
+  background-color: #d4af37;
+  color: #000;
+}
+
+.action-btn[color="accent"] {
+  border: 2px solid #d4af37;
+  color: #d4af37;
+}
+
+.action-btn[color="accent"]:hover {
+  background-color: rgba(212, 175, 55, 0.1);
+}
+
+.footer {
+  position: absolute;
+  bottom: 12px;
+  text-align: center;
+  color: #777;
+  font-size: 12px;
+  font-style: italic;
+}
