@@ -1,1 +1,38 @@
-<p>sala works!</p>
+<div class="sala-root">
+  <header class="title-wrap">
+    <h1 class="title">Sala <span class="accent">{{ roomId }}</span></h1>
+    <p class="subtitle">Esperando jugadores...</p>
+  </header>
+
+  <mat-card class="sala-card">
+    <div class="codigo-wrap">
+      <p class="codigo">{{ roomId }}</p>
+      <button mat-stroked-button color="accent" (click)="copiarCodigo()">Copiar código</button>
+    </div>
+
+    <div class="jugadores">
+      <h3>Jugadores ({{ jugadores.length }})</h3>
+      <ul>
+        <li *ngFor="let jugador of jugadores">
+          {{ jugador.name }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="acciones">
+      <button
+        mat-raised-button
+        color="primary"
+        *ngIf="esCreador"
+        (click)="iniciarPartida()"
+        [disabled]="jugadores.length < 3"
+      >
+        Iniciar partida
+      </button>
+
+      <button mat-stroked-button color="accent" (click)="salirSala()">
+        Salir
+      </button>
+    </div>
+  </mat-card>
+</div>

@@ -58,6 +58,10 @@
   width: 100%;
 }
 
+mat-label{
+    color: #1a1a1a88;
+}
+
 .mat-mdc-text-field-wrapper {
   background-color: rgba(255, 255, 255, 0.05);
   border-radius: 6px;

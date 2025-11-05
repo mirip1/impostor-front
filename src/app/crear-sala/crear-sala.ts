@@ -35,10 +35,11 @@ export class CrearSalaComponent {
   crearSala() {
     if (!this.nombreJugador.trim()) return;
     this.cargando = true;
-
+    localStorage.setItem('nombreJugador', this.nombreJugador.trim());
     this.socket.emit('create-room', { name: this.nombreJugador }, (response: any) => {
       this.cargando = false;
       if (response && response.roomId) {
+        this.socket.emit('join-room', { roomId: response.roomId, playerName: this.nombreJugador});
         this.router.navigate(['/sala', response.roomId]);
       } else {
         alert('Error al crear la sala.');

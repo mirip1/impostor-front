@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Roboto:wght@300;400;500&display=swap');
+
+.crear-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+  color: #f0f0f0;
+  font-family: 'Roboto', sans-serif;
+  padding: 16px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.title-wrap {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 38px;
+  font-weight: 700;
+  color: #d4af37;
+  text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.accent {
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.subtitle {
+  color: #bbb;
+  font-size: 16px;
+  margin-top: 6px;
+  font-style: italic;
+}
+
+.crear-card {
+  background-color: rgba(30, 30, 30, 0.95);
+  border: 1px solid #d4af37;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+  padding: 2rem;
+  width: 90%;
+  max-width: 340px;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.campo {
+  width: 100%;
+}
+
+mat-label{
+    color: #1a1a1a88;
+}
+
+.mat-mdc-text-field-wrapper {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+}
+
+.action-btn {
+  height: 54px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  text-transform: none;
+  background: linear-gradient(45deg, #d4af37, #b68d40);
+  color: #000;
+}
+
+.action-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.footer {
+  margin-top: 32px;
+}
+
+.footer button {
+  border: 2px solid #d4af37;
+  color: #d4af37;
+  border-radius: 8px;
+  text-transform: none;
+  font-weight: 500;
+}
+
+.footer button:hover {
+  background-color: rgba(212, 175, 55, 0.1);
+}

@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Roboto:wght@300;400;500&display=swap');
+
+.sala-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+  color: #f0f0f0;
+  font-family: 'Roboto', sans-serif;
+  padding: 16px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.title-wrap {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 38px;
+  font-weight: 700;
+  color: #d4af37;
+  text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.accent {
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.subtitle {
+  color: #bbb;
+  font-size: 16px;
+  margin-top: 6px;
+  font-style: italic;
+}
+
+.sala-card {
+  background-color: rgba(30, 30, 30, 0.95);
+  border: 1px solid #d4af37;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+  padding: 2rem;
+  width: 90%;
+  max-width: 420px;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.codigo-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+}
+
+.codigo {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 20px;
+  font-weight: bold;
+  color: #d4af37;
+  margin: 0;
+}
+
+.jugadores {
+  text-align: left;
+}
+
+.jugadores h3 {
+  color: #d4af37;
+  margin-bottom: 0.5rem;
+}
+
+.jugadores ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.jugadores li {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  padding: 8px;
+  margin-bottom: 6px;
+  color: #f0f0f0;
+  font-weight: 500;
+}
+
+.acciones {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.acciones button {
+  border-radius: 8px;
+  text-transform: none;
+  font-weight: 600;
+}
