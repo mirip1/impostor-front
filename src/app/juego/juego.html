@@ -1,1 +1,62 @@
-<p>juego works!</p>
+<div class="juego-root">
+  <header class="title-wrap">
+    <h1 class="title">Impostor <span class="accent">OT</span></h1>
+    <p class="subtitle">Sala <strong>{{ roomId }}</strong></p>
+  </header>
+
+  <mat-card class="juego-card">
+    <section class="role-area">
+      <div class="role-box" [class.impostor]="myRole === 'impostor'">
+        <h2 *ngIf="myRole === 'impostor'">ERES EL <span class="impostor-label">IMPOSTOR</span></h2>
+        <div *ngIf="myRole === 'player'">
+          <p class="label">Tu palabra</p>
+          <p class="word">{{ myWord }}</p>
+        </div>
+        <p *ngIf="!myRole" class="waiting">Esperando inicio de ronda…</p>
+      </div>
+    </section>
+
+    <section class="players-area">
+      <h3>Jugadores ({{ jugadores.length }})</h3>
+      <mat-list>
+        <mat-list-item *ngFor="let p of jugadores">
+          <div class="player-item">
+            <div>
+              <span class="player-name" [class.eliminated]="p.eliminated">{{ p.name }}</span>
+              <span *ngIf="p.id === ownerId" class="owner-badge">owner</span>
+              <span *ngIf="p.id === myId" class="you-badge">tú</span>
+            </div>
+
+            <div class="player-actions">
+              <button mat-stroked-button class="vote-btn" (click)="votar(p.id)" [disabled]="p.eliminated || eliminated || !roundActive || voteLocked">
+                Votar
+              </button>
+            </div>
+          </div>
+        </mat-list-item>
+      </mat-list>
+
+      <div class="abstain">
+        <button mat-stroked-button (click)="votar(null)" [disabled]="eliminated || !roundActive || voteLocked">Abstenerse</button>
+      </div>
+    </section>
+
+    <section class="status-area">
+      <p *ngIf="roundActive">Votos recogidos: {{ votesCount }}</p>
+      <p *ngIf="lastVoteResult">
+        Resultado: 
+        <strong *ngIf="lastVoteResult.eliminated">
+          {{ lastVoteResult.eliminated.name }}
+        </strong>
+        <span *ngIf="!lastVoteResult.eliminated">Nadie eliminado (abstenciones)</span>
+        <span *ngIf="lastVoteResult.wasImpostor"> — Era impostor ✅</span>
+        <span *ngIf="!lastVoteResult.wasImpostor && lastVoteResult.eliminated"> — No era impostor ❌</span>
+      </p>
+
+      <div class="actions-bottom">
+        <button mat-raised-button color="primary" (click)="salir()">Salir</button>
+        <button mat-stroked-button color="accent" *ngIf="esCreador" (click)="terminarRonda()">Terminar ronda</button>
+      </div>
+    </section>
+  </mat-card>
+</div>

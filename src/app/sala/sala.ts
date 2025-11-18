@@ -6,12 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { io } from 'socket.io-client';
 import { ruta } from '../../common/enviroment';
-
-interface Jugador {
-  id: string;
-  name: string;
-  eliminated?: boolean;
-}
+import { SocketService } from '../services/socketservice';
 
 @Component({
   standalone: true,
@@ -23,43 +18,47 @@ interface Jugador {
 export class SalaComponent implements OnInit, OnDestroy {
   socket: any;
   roomId = '';
-  jugadores: Jugador[] = [];
+  jugadores: any[] = [];
   nombreJugador = '';
   esCreador = false;
-  mySocketId = '';
 
-  constructor(private route: ActivatedRoute, private router: Router, private ngZone: NgZone) {
-    this.socket = io(ruta);
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private ngZone: NgZone,
+    private socketSvc: SocketService,
+  ) {}
 
   ngOnInit() {
     this.roomId = this.route.snapshot.paramMap.get('id') || '';
     this.nombreJugador = localStorage.getItem('nombreJugador') || 'Jugador';
-    this.esCreador = localStorage.getItem('esCreador') === 'true';
 
-    // Pedimos nuestro socketId al backend
-    this.socket.emit('request-socket-id');
-    this.socket.on('your-socket-id', (id: string) => {
-      this.mySocketId = id;
-
-      // Una vez que tenemos nuestro ID, pedimos la lista de jugadores
-      this.socket.emit('player-list-room', { roomId: this.roomId });
+    /* REJOIN SI SE RECONECTA */
+    this.socketSvc.socket.on("connect", () => {
+      this.socketSvc.socket.emit('join-room', { roomId: this.roomId, playerName: this.nombreJugador });
     });
 
-    // Escuchar lista de jugadores
-    this.socket.on('player-list', (data: any) => {
+    /* UNIRSE A LA ROOM *ANTES DE LOS LISTENERS* */
+    this.socketSvc.socket.emit('join-room', { roomId: this.roomId, playerName: this.nombreJugador });
+
+    /* PEDIR LISTA */
+    this.socketSvc.socket.emit('player-list-room', { roomId: this.roomId });
+
+    /* PLAYER LIST */
+    this.socketSvc.socket.on('player-list', (data: any) => {
       this.ngZone.run(() => {
-        if (data && data.players) {
-          this.jugadores = data.players;
-          // Comprobar si somos el owner usando nuestro socketId
-          this.esCreador = this.mySocketId === data.ownerId;
-        }
+        this.jugadores = data.players || [];
+        this.esCreador = this.socketSvc.getId() === data.ownerId;
       });
     });
 
-    // Escuchar inicio de partida
-    this.socket.on('game-started', () => {
-      alert('¡La partida ha comenzado!');
+    /* ROUND START → AHORA SIEMPRE LLEGA */
+    this.socketSvc.socket.on("round-start", (data) => {
+      localStorage.setItem("roundStartPayload", JSON.stringify(data));
+
+      this.ngZone.run(() => {
+        this.router.navigate(['/juego', this.roomId]);
+      });
     });
   }
 
@@ -69,15 +68,16 @@ export class SalaComponent implements OnInit, OnDestroy {
   }
 
   iniciarPartida() {
-    this.socket.emit('start-game', { roomId: this.roomId });
+    this.socketSvc.socket.emit('start-round', this.roomId);
   }
 
   salirSala() {
-    this.socket.emit('leave-room', { roomId: this.roomId, name: this.nombreJugador });
+    this.socketSvc.socket.emit('leave-room', { roomId: this.roomId });
+    localStorage.removeItem('esCreador'); 
     this.router.navigate(['/home']);
   }
 
   ngOnDestroy() {
-    this.socket.disconnect();
+    this.socketSvc.off('player-list');
   }
 }
