@@ -6,6 +6,8 @@ RUN npm install -g @angular/cli
 RUN npm install
 COPY . .
 RUN ng build --configuration production
+# Verificar que se usó la configuración de producción
+RUN grep -q 'socketUrl:""' /app/dist/impostor-frontend/browser/main*.js && echo "✅ Production config OK" || echo "❌ Production config FAILED"
 
 # ---------- RUN ----------
 FROM nginx:alpine
