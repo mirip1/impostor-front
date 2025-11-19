@@ -48,7 +48,7 @@ export class JuegoComponent implements OnInit, OnDestroy {
     private router: Router,
     private socketSvc: SocketService,
     private ngZone: NgZone
-  ) {}
+  ) { }
 
   ngOnInit() {
     const savedPayload = localStorage.getItem("roundStartPayload");
@@ -62,7 +62,7 @@ export class JuegoComponent implements OnInit, OnDestroy {
       // limpiamos
       localStorage.removeItem("roundStartPayload");
     }
-    
+
     this.roomId = this.route.snapshot.paramMap.get('id') || '';
     this.myName = localStorage.getItem('nombreJugador') || 'Jugador';
 

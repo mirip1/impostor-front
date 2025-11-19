@@ -1,1 +1,3 @@
-export const ruta = "http://localhost:3000";
+import { environment } from '../environments/environment';
+
+export const ruta = environment.socketUrl;
