@@ -4,59 +4,99 @@
     <p class="subtitle">Sala <strong>{{ roomId }}</strong></p>
   </header>
 
-  <mat-card class="juego-card">
-    <section class="role-area">
-      <div class="role-box" [class.impostor]="myRole === 'impostor'">
-        <h2 *ngIf="myRole === 'impostor'">ERES EL <span class="impostor-label">IMPOSTOR</span></h2>
-        <div *ngIf="myRole === 'player'">
-          <p class="label">Tu palabra</p>
-          <p class="word">{{ myWord }}</p>
+  <div class="game-container">
+    <!-- Role Card - Hidden by default -->
+    <section class="role-card-section">
+      <div class="role-card" [class.revealed]="cardRevealed" [class.impostor]="myRole === 'impostor'"
+        (click)="toggleCard()">
+        <div class="card-front" *ngIf="!cardRevealed">
+          <div class="card-icon">🎭</div>
+          <p class="card-prompt">Toca para revelar tu rol</p>
         </div>
-        <p *ngIf="!myRole" class="waiting">Esperando inicio de ronda…</p>
+
+        <div class="card-back" *ngIf="cardRevealed">
+          <div *ngIf="myRole === 'impostor'" class="impostor-content">
+            <h2 class="role-title">ERES EL</h2>
+            <p class="impostor-label">IMPOSTOR</p>
+            <p class="card-hint">Toca para ocultar</p>
+          </div>
+
+          <div *ngIf="myRole === 'player'" class="player-content">
+            <p class="word-label">Tu palabra</p>
+            <p class="word">{{ myWord }}</p>
+            <p class="card-hint">Toca para ocultar</p>
+          </div>
+
+          <div *ngIf="!myRole" class="waiting-content">
+            <p class="waiting">Esperando inicio de ronda…</p>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="players-area">
-      <h3>Jugadores ({{ jugadores.length }})</h3>
-      <mat-list>
-        <mat-list-item *ngFor="let p of jugadores">
-          <div class="player-item">
-            <div>
-              <span class="player-name" [class.eliminated]="p.eliminated">{{ p.name }}</span>
-              <span *ngIf="p.id === ownerId" class="owner-badge">owner</span>
-              <span *ngIf="p.id === myId" class="you-badge">tú</span>
-            </div>
+    <!-- Players List -->
+    <section class="players-section">
+      <h3 class="section-title">Jugadores ({{ jugadores.length }})</h3>
 
-            <div class="player-actions">
-              <button mat-stroked-button class="vote-btn" (click)="votar(p.id)" [disabled]="p.eliminated || eliminated || !roundActive || voteLocked">
-                Votar
-              </button>
+      <div class="players-list">
+        <div *ngFor="let p of jugadores" class="player-card">
+          <div class="player-info">
+            <span class="player-name" [class.eliminated]="p.eliminated">{{ p.name }}</span>
+            <div class="badges">
+              <span *ngIf="p.id === ownerId" class="badge owner-badge">owner</span>
+              <span *ngIf="p.id === myId" class="badge you-badge">tú</span>
             </div>
           </div>
-        </mat-list-item>
-      </mat-list>
 
-      <div class="abstain">
-        <button mat-stroked-button (click)="votar(null)" [disabled]="eliminated || !roundActive || voteLocked">Abstenerse</button>
+          <button mat-raised-button color="primary" class="vote-btn" (click)="votar(p.id)"
+            [disabled]="p.eliminated || eliminated || !roundActive || voteLocked">
+            Votar
+          </button>
+        </div>
+      </div>
+
+      <div class="abstain-section">
+        <button mat-stroked-button color="accent" class="abstain-btn" (click)="votar(null)"
+          [disabled]="eliminated || !roundActive || voteLocked">
+          Abstenerse
+        </button>
       </div>
     </section>
 
-    <section class="status-area">
-      <p *ngIf="roundActive">Votos recogidos: {{ votesCount }}</p>
-      <p *ngIf="lastVoteResult">
-        Resultado: 
-        <strong *ngIf="lastVoteResult.eliminated">
-          {{ lastVoteResult.eliminated.name }}
-        </strong>
-        <span *ngIf="!lastVoteResult.eliminated">Nadie eliminado (abstenciones)</span>
-        <span *ngIf="lastVoteResult.wasImpostor"> — Era impostor ✅</span>
-        <span *ngIf="!lastVoteResult.wasImpostor && lastVoteResult.eliminated"> — No era impostor ❌</span>
-      </p>
+    <!-- Status Section -->
+    <section class="status-section">
+      <div *ngIf="roundActive" class="vote-count">
+        <span class="vote-icon">🗳️</span>
+        <span>Votos recogidos: <strong>{{ votesCount }}</strong></span>
+      </div>
+
+      <div *ngIf="lastVoteResult" class="vote-result">
+        <p class="result-title">Resultado de la votación:</p>
+        <div class="result-content">
+          <strong *ngIf="lastVoteResult.eliminated">
+            {{ lastVoteResult.eliminated.name }}
+          </strong>
+          <span *ngIf="!lastVoteResult.eliminated">Nadie eliminado (abstenciones)</span>
+          <span *ngIf="lastVoteResult.wasImpostor" class="result-badge success">Era impostor ✅</span>
+          <span *ngIf="!lastVoteResult.wasImpostor && lastVoteResult.eliminated" class="result-badge error">No era
+            impostor ❌</span>
+        </div>
+
+        <!-- Mensaje de fin de juego -->
+        <div *ngIf="gameOver" class="game-over-message">
+          <p *ngIf="gameOverReason === 'impostor_found'" class="victory">🎉 ¡Victoria! El impostor ha sido encontrado
+          </p>
+          <p *ngIf="gameOverReason === 'impostor_wins'" class="defeat">😈 El impostor gana - Quedan muy pocos jugadores
+          </p>
+        </div>
+      </div>
 
       <div class="actions-bottom">
-        <button mat-raised-button color="primary" (click)="salir()">Salir</button>
-        <button mat-stroked-button color="accent" *ngIf="esCreador" (click)="terminarRonda()">Terminar ronda</button>
+        <button mat-stroked-button color="accent" class="action-btn" (click)="salir()">Salir</button>
+        <button mat-raised-button color="primary" class="action-btn" *ngIf="esCreador" (click)="nuevaPartida()">
+          Nueva Partida
+        </button>
       </div>
     </section>
-  </mat-card>
+  </div>
 </div>

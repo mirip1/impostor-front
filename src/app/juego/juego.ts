@@ -42,6 +42,11 @@ export class JuegoComponent implements OnInit, OnDestroy {
   votesCount = 0;
   lastVoteResult: any = null;
   voteLocked = false;
+  gameOver = false;
+  gameOverReason: string | null = null;
+
+  // Card reveal state
+  cardRevealed = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -144,8 +149,18 @@ export class JuegoComponent implements OnInit, OnDestroy {
           this.eliminated = true;
         }
 
+        // Marcar fin de juego si corresponde
+        this.gameOver = payload.gameOver || false;
+        this.gameOverReason = payload.gameOverReason || null;
+
+        // Bloquear votación temporalmente, pero se desbloqueará automáticamente
+        // si el juego no terminó (roundActive se mantiene true desde el backend)
         this.voteLocked = true;
-        this.roundActive = false;
+
+        // Desbloquear después de 2 segundos para permitir siguiente votación
+        setTimeout(() => {
+          this.voteLocked = false;
+        }, 2000);
       });
     });
   }
@@ -157,9 +172,16 @@ export class JuegoComponent implements OnInit, OnDestroy {
     this.socketSvc.socket.emit('vote', { roomId: this.roomId, targetId });
   }
 
-  terminarRonda() {
+  nuevaPartida() {
     if (!this.esCreador) return;
-    this.socketSvc.socket.emit('end-round', this.roomId);
+    this.lastVoteResult = null;
+    this.gameOver = false;
+    this.gameOverReason = null;
+    this.socketSvc.socket.emit('new-game', this.roomId);
+  }
+
+  toggleCard() {
+    this.cardRevealed = !this.cardRevealed;
   }
 
   salir() {
