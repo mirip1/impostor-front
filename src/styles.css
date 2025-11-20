@@ -1,7 +1,15 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
 
 body {
   background-color: #000;
   color: #f0f0f0;
   font-family: 'Roboto', sans-serif;
-  margin: 0;
 }

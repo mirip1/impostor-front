@@ -4,12 +4,13 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: top;
   align-items: center;
   background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
   color: #f0f0f0;
   font-family: 'Roboto', sans-serif;
   padding: 16px;
+  padding-top: 120px;
   box-sizing: border-box;
 }
 
